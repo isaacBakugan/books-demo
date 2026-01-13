@@ -41,6 +41,20 @@ class BookViewSet(viewsets.ModelViewSet):
             "currency": currency,
             "calculation_timestamp": timezone.now()
         })
+    def get_queryset(self):
+        queryset = Book.objects.all()
+        category = self.request.query_params.get('category')
+        if category:
+            queryset = queryset.filter(category__icontains=category)
+        return queryset
+
+    # 2. Libros con stock bajo
+    @action(detail=False, methods=['get'], url_path='low-stock')
+    def low_stock(self, request):
+        threshold = request.query_params.get('threshold', 10)
+        books = Book.objects.filter(stock_quantity__lte=threshold)
+        serializer = self.get_serializer(books, many=True)
+        return Response(serializer.data)
     
 def health_check(request):
     """
@@ -61,3 +75,5 @@ def health_check(request):
         return JsonResponse(health_data, status=503) # Service Unavailable 
 
     return JsonResponse(health_data)
+
+    
