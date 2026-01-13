@@ -51,13 +51,13 @@ def health_check(request):
         "database": "connected",
         "timestamp": "2026-01-12T..." # ¡Recuerda que ya estamos en el 2026!
     }
-    # try:
-    #     # Verificamos si la base de datos de Supabase nos sigue queriendo
-    #     print("test")
-    #     connection.ensure_connection()
-    # except Exception as e:
-    #     health_data["status"] = "unhealthy"
-    #     health_data["database"] = f"error: {str(e)}"
-    #     return JsonResponse(health_data, status=503) # Service Unavailable 
+    try:
+        # Verificamos si la base de datos de Supabase nos sigue queriendo
+        print("test")
+        connection.ensure_connection()
+    except Exception as e:
+        health_data["status"] = "unhealthy"
+        health_data["database"] = f"error: {str(e)}"
+        return JsonResponse(health_data, status=503) # Service Unavailable 
 
     return JsonResponse(health_data)
