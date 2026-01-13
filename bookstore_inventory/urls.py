@@ -1,9 +1,9 @@
 from django.contrib import admin
 from django.urls import path, include
-from .views import health_check # Importa tu nueva creación
+from books.views import health_check # Importas tu función
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('health/', health_check), # El endpoint de vida o muerte
-    path('api/', include('books.urls')), # Donde vivirá el CRUD y el cálculo [cite: 35-45]
+    path('health/', health_check), # La ruta que estamos probando
+    path('api/books/', include('books.urls')), # ¡Aquí es donde fallaría si falta el archivo!
 ]

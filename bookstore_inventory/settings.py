@@ -25,6 +25,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
     # Terceros
     'rest_framework',
     'corsheaders', # Para evitar líos de CORS si conectas un front
@@ -107,3 +108,8 @@ REST_FRAMEWORK = {
 
 # 11. CORS: Permitir todo para la prueba técnica
 CORS_ALLOW_ALL_ORIGINS = True
+
+# Al final del archivo, asegúrate de tener esto para producción:
+STATIC_URL = 'static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
