@@ -1,12 +1,9 @@
 from django.contrib import admin
 from django.urls import path, include
-from rest_framework.routers import DefaultRouter
-from books.views import BookViewSet
-
-router = DefaultRouter()
-router.register(r'books', BookViewSet)
+from .views import health_check # Importa tu nueva creación
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/', include(router.urls)), # Prefijo api para brillar
+    path('health/', health_check), # El endpoint de vida o muerte
+    path('api/', include('books.urls')), # Donde vivirá el CRUD y el cálculo [cite: 35-45]
 ]

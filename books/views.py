@@ -5,6 +5,8 @@ from rest_framework.response import Response
 from django.utils import timezone
 from .models import Book
 from .serializers import BookSerializer
+from django.http import JsonResponse
+from django.db import connection
 import os
 
 class BookViewSet(viewsets.ModelViewSet):
@@ -39,3 +41,22 @@ class BookViewSet(viewsets.ModelViewSet):
             "currency": currency,
             "calculation_timestamp": timezone.now()
         })
+    
+def health_check(request):
+    """
+    Endpoint para que Cloud Run y Nextep sepan que no hemos incendiado el servidor.
+    """
+    health_data = {
+        "status": "ok",
+        "database": "connected",
+        "timestamp": "2026-01-12T..." # ¡Recuerda que ya estamos en el 2026!
+    }
+    try:
+        # Verificamos si la base de datos de Supabase nos sigue queriendo
+        connection.ensure_connection()
+    except Exception as e:
+        health_data["status"] = "unhealthy"
+        health_data["database"] = f"error: {str(e)}"
+        return JsonResponse(health_data, status=503) # Service Unavailable [cite: 74]
+
+    return JsonResponse(health_data)
