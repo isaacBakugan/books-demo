@@ -18,4 +18,4 @@ API REST robusta diseñada para la gestión de inventario de una cadena de libre
 1. **Clonar el repositorio:**
    ```bash
    git clone https://github.com/isaacBakugan/books-demo.git
-   cd bookstore_inventory_api
+   cd bookstore_inventory_api 
